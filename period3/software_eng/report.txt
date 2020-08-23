@@ -1,0 +1,10 @@
+Especificação de Fluxo de Diagrama
+
+(relativo ao Diagrama de Fluxos)
+
+    O fluxo se inicia em '01', com a aproximação de um transeunte. Sua detecção, após sua aproximação da distância requerida, no fluxo '02', o torna um sujeito sob análise do sistema automatizado da porta. 
+    Desembocando no fluxo '03', o sensor checa o horário atual da operação e o compara com o horário de funcionamento programado. No fluxo '04', é checado se a aproximação ocorre no horário definido para que a entrada seja garantida sem maiores empecilhos, no fluxo '05c'. 
+    Se não for o caso, o fluxo '05a' é tomado, onde é requisitado ao indivíduo que se identifique ao sistema, seja de maneira digital ou manual. Após a obtenção das informações de identifiação, o fluxo '06' é tomado. 
+    Nesse ínterim, é tomado o fluxo '05b', concomitantemente. Esse fluxo checa, por meio de um timer, se o indivíduo está levando mais tempo que deveria para se identificar: caso esteja, o fluxo '07b' é tomado, desembocando no comando de saída que alerta o dispositivo de segurança para o efetuamento de uma checagem condicional da situação, mantendo fechada a portaria; caso não esteja, o fluxo '06b' é tomado, e as credenciais são checadas para ter sua validez checada.
+    Tendo checado a validez das credenciais, dois fluxos podem ser tomados: '07c', onde as credenciais são inválidas e o sistema reporta a aproximação suspeita ao administrador e mantém a portaria fechada, e '07a', onde, tendo credenciais válidas, o sistema libera a entrada d indivíduo, por meio de uma mensagem ao mecanismo responsável pela abertura mecânica da portaria. 
+    No último fluxo, '08', o indivíduo volta a ser tratado como transeunte e pode efetuar sua entrada no recinto protegido pelo sistema. 
