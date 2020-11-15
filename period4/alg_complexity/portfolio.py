@@ -1,107 +1,139 @@
 import json
 
-with open('games.json', 'r') as file:
-	games_dic = json.load(file)
+dic = open("game_list.json", "r")
+games_dic = json.load(dic)
 
 
 def printDic(dic):
 
-	for x in dic:
-		print(list(dic.keys()))
+    print(list(dic.items()), "\n")
 
 
-def toList(dic, val):
+def toList(dic):
+    if dic == {}:
+        print("Dicionário vazio.")
+        return {}
 
-	if not dic and val:
-		return []
+    lst = []
 
-	lst = []
-
-	if val.upper() == "NOME":
-    
-		for key in list(dic.keys()):
-			lst.append([key])
-
-	if val.upper() == "VALOR":
-    
-		for val in list(dic.values()):
-    		lst.append([val])
-	
-	return lst
+    for val in list(dic.values()):
+        lst.append(val)
+        
+    return lst
 
 
 def partitionQuick(list, begin, end):
-    pivot = list[begin]
-    i = begin + 1
-    j = end - 1
- 
-    while True:
-        while (i <= j and list[i] <= pivot):
-            i += 1
+    i = (begin - 1)
+    pivot = list[end]
 
-        while (i <= j and list[j] >= pivot):
-            j -= 1
- 
-        if i <= j:
-           list[i], list[j] = list[j], list[i]
+    for j in range(begin, end):
+        if list[j] <= pivot:
+            i = i + 1
+            list[i], list[j] = list[j], list[i]
 
-        else:
-            list[begin], list[j] = list[j], list[begin]
-            return j
+    list[i + 1], list[end] = list[end], list[i + 1]
+    return(i + 1)
 
 
 def quickSort(list, begin, end):
 
-	if not lista:
-    	print("Lista vazia.")
-    	return []
+    if list == []:
+        print("Lista vazia.")
+        return []
+
+    elif begin < end:
+
+        p = partitionQuick(list, begin, end)
+
+        quickSort(list, begin, p - 1)
+        quickSort(list, p + 1, end)
   
-	if end - begin > 1:
-		p = partitionQuick(list, begin, end)
-		quickSort(list, begin, p)
-		quickSort(list, p + 1, end)
-		
-
-def merge(left_half, right_half):
-
-    result_lst = []
-
-    while len(left_half) != 0 and len(right_half) != 0:
-        if left_half[0] < right_half[0]:
-            result_lst.append(left_half[0])
-            left_half.remove(left_half[0])
-
-        else:
-            result_lst.append(right_half[0])
-            right_half.remove(right_half[0])
-
-    result_lst += right_half if len(left_half) == 0 else left_half
-
-    return result_lst
+    return list
 
 
-def mergeSort(uns_list):
+def mergeSort(unsorted):
+    if unsorted == []:
+        print("Lista vazia.")
+        return []
 
-    if len(uns_list) <= 1:
-        return uns_list
+    lst = [] 
+    lst = unsorted
+    size = len(lst)
+
+    if size > 1:
+        mid = size // 2
+        left = lst[:mid]
+        right = lst[mid:]
+
+        mergeSort(left)
+        mergeSort(right)
+
+        p = 0
+        q = 0
+        r = 0
+        left_size = len(left)
+        right_size = len(right)
+
+        while p < left_size and q < right_size:
+            if left[p] < right[q]:
+                lst[r] = left[p]
+                p += 1
+
+            else:
+                lst[r] = right[q]
+                q += 1
+            r += 1
+
+        while p < left_size:
+            lst[r] = left[p]
+            p += 1
+            r += 1
+
+        while q < right_size:
+            lst[r] = right[q]
+            q += 1
+            r += 1
+
+    return lst
+
+
+def sorter(dic):
+  
+    games_lst = []
+    tmp_lst = []
     
-    middle = len(uns_list) // 2
+    games_lst = toList(dic)
 
-    left_list = uns_list[:middle]
-    right_list = uns_list[middle:]
-    left_list = mergeSort(left_list)
-    right_list = mergeSort(right_list)
+    print("Preços dos jogos:")
+    for i in games_lst:
+        print("R$" + str(i))
+ 
 
-    return list(merge(left_list, right_list))
+    alg = input("Digite \"QUICK\" para ordenar o dicionário em ordem crescente usando o algoritmo Quick Sort; \nOu, então, digite \"MERGE\" para ordenar o dicionário usando o algoritmo Merge Sort:\n")
+
+    if alg.upper() == "QUICK":
+        print("\nOrdenando via Quick Sort...")
+        tmp_lst = quickSort(games_lst, 0, len(games_lst) - 1)
+
+    elif alg.upper() == "MERGE":
+        print("\nOrdenando via Merge Sort...")
+        tmp_lst = mergeSort(games_lst)
+
+    else:
+        print("Algoritmo inválido")
+        return []
+
+    return tmp_lst
 
 
+print("Dicionário com valores não ordenados:")
 printDic(games_dic)
 
-def sorter(dic)
+sortedList = []
+sortedList = sorter(games_dic)
 
-	val = input("Digite \"NOME\" para ordenar as entradas do dicionário por nome; \nOu, então, digite \"VALOR\" para ordernar as entradas por valor")
-	games_lst = []
-	games_lst = toList(games_dic, val)
+print("\nPreços ordenados em ordem crescente:")
+for i in sortedList:
+    print("R$" + str(i))
 
-	alg = input("Digite \"QUICK\" para ordenar o dicionário usando o algoritmo Quick Sort; \nOu, então, digite \"MERGE\" para ordernar o dicionário usando o Merge Sort.")
-quickSort(games_lst, 0, len(games_lst))
+dic.close()
